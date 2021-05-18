@@ -1,0 +1,148 @@
+package gui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class MainGUI extends JFrame implements ActionListener{	
+	
+	
+	JLabel label;
+	ImageIcon bild;
+	
+	JFrame menu;
+	
+	JButton bstart, boption, bquit;
+		
+	JFrame cgui;
+	JPanel pnlc;
+	JButton backtohub;
+	JLabel text;
+		
+	
+	static JFrame sgui;
+		
+	public void MenuGUI(){
+		
+		
+		menu = new JFrame("2D Jump and Run");	
+		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		menu.setSize(800, 500);
+		menu.setLayout(null);
+		menu.setResizable(false);
+		menu.setLocationRelativeTo(null);
+		
+		bild = new ImageIcon(new ImageIcon((getClass().getResource("menu.png"))).getImage());
+		
+		label = new JLabel();
+		label.setBounds(0, 0, 800, 500);
+		label.setIcon(bild);
+		
+		menu.getContentPane().setBackground(Color.black);
+		menu.add(label);
+		menu.setVisible(true);
+		
+		ImageIcon icon = new ImageIcon((getClass().getResource("ICON.png")));
+		menu.setIconImage(icon.getImage());
+		
+		//StartButton
+		bstart = new JButton("Start");
+		bstart.setBounds(325, 100, 150, 50);
+		menu.add(bstart);
+		bstart.addActionListener(this);
+		
+		//EinstellungButton
+		boption= new JButton("Einstellungen");
+		boption.setBounds(325, 200, 150, 50);
+		menu.add(boption);
+		boption.addActionListener(this);
+				
+		//QuitButton
+		bquit = new JButton("Verlassen");
+		bquit.setBounds(325, 300, 150, 50);
+		menu.add(bquit);
+		bquit.addActionListener(this);
+		
+		
+		
+	}
+	
+	//SpielGUI
+	public void SGUI() {
+			
+	sgui = new JFrame("2D Jump and Run");
+	sgui.setSize(800,500);
+	sgui.setResizable(false);
+	sgui.setVisible(true);
+	sgui.setLocationRelativeTo(null);
+	sgui.add(new SpielGUI());
+			
+	}
+		
+	//Credits GUI
+	public  void CGUI() {
+			
+		cgui = new JFrame("2D Jump and Run");
+		cgui.setVisible(true);
+		cgui.setSize(800,500);
+		cgui.setResizable(false);
+		cgui.setLocationRelativeTo(null);
+
+		pnlc = new JPanel();
+		pnlc.setVisible(true);
+		pnlc.setLayout(null);
+			
+		backtohub = new JButton("Zurück");
+		backtohub.setBounds(650, 40, 80, 50);
+		backtohub.addActionListener(this);
+		pnlc.add(backtohub);
+			
+		 JLabel label = new JLabel("Einstellungen");
+		 Dimension size = label.getPreferredSize();
+		 label.setBounds(280, 0, 260, 140);
+		 label.setFont(new Font("Arial", Font.BOLD, 34));
+
+		 pnlc.add(label);	
+		 cgui.add(pnlc);
+
+		}
+		
+		
+		//ActionPerformed
+		public void actionPerformed(ActionEvent e) {
+			
+			if(e.getSource()==bstart) {
+
+				SGUI();
+				System.out.println("Spiel Fenster wird gestartet, Menu Fenster wurde geschlossen!");
+				menu.dispose();
+			}
+			if(e.getSource()==boption) {
+				CGUI();
+				System.out.println("Spiel Fenster wird gestartet, Menu Fenster wurde geschlossen!");
+				menu.dispose();
+			}
+			if(e.getSource()==bquit) {
+				System.out.println("Menu Fenster wurde geschlossen!");
+				System.exit(0);
+			}
+			
+			
+			if(e.getSource()==backtohub) {
+				MenuGUI();
+				System.out.println("Menu Fenster wird gestartet, Credits Fenster wurde geschlossen!");
+				cgui.dispose();
+			}
+			
+			
+		}
+	
+}
