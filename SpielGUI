@@ -1,0 +1,209 @@
+package gui;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import movement.Jump;
+
+public class SpielGUI extends JPanel implements ActionListener{
+		
+		Timer time;
+		Image img;
+		Image img2;
+		Image img3;
+		Image img4;
+		
+		int left = 75;
+		
+		int nx,nx2;
+		int ximg;
+		int key, lauf;
+		
+		int anzahl = 0;
+		int anzahl2 = 0;
+		
+		int char_y = 235;
+		
+		CoinGUI coin1;
+		CoinGUI coin2;
+		int coin_score;
+
+		public SpielGUI() {
+			
+			
+			nx = 0;
+			nx2 = 790;
+			
+			key = 0;
+			lauf = 0;
+			
+			//Frame
+			setFocusable(true);
+			
+			//Background
+			ImageIcon u = new ImageIcon((getClass().getResource("background.png")));
+			img = u.getImage();	
+			
+			//Player
+			ImageIcon p = new ImageIcon((getClass().getResource("player.png")));
+			img2 = p.getImage();	
+			
+			ImageIcon coinimg = new ImageIcon((getClass().getResource("coin.png")));
+			img3 = coinimg.getImage();	
+			img4 = coinimg.getImage();	
+			
+			addKeyListener(new AL());
+			
+			time = new Timer(5,this);
+			time.start();
+			
+			Jump sprung = new Jump();
+			
+			coin1 = new CoinGUI(450,110,60,60,Color.YELLOW);
+			
+			coin2 = new CoinGUI(750,110,60,60,Color.YELLOW);
+			
+			
+	}
+	
+	public void actionPerformed(ActionEvent e) {		
+			move();
+			
+			char_y = Jump.sprungposition;
+			
+			repaint();
+	}
+	
+	public void move() {
+		
+		if(lauf != -2) {
+			
+			if(left + lauf <= 75) {
+				left += lauf;
+			}else {
+				
+				ximg += lauf;
+				
+				nx += lauf;
+				nx2 += lauf;
+			}
+		}else {
+			if(left+lauf > 0) {
+				left += lauf;
+			}
+		}
+		
+	}
+	
+	public void paint (Graphics g) {
+		
+		super.paint(g);
+		Graphics2D background = (Graphics2D)g;
+		      
+		if(getXImg() == 0 + (anzahl * 1600)){
+			anzahl += 1;
+			nx = 0;
+		}
+		if(getXImg() == 800 + (anzahl2 * 1600)) {
+			anzahl2 += 1;
+			nx2 = 0;
+		}
+		
+		if(getXImg() >= 0) {
+			g.drawImage(img,790-nx, 0, null);
+		}
+		g.drawImage(img,790-nx2, 0, null);
+		
+		g.drawImage(img2, left, char_y, null);
+	
+		g.setColor(coin1.getColor());
+		
+		
+		g.drawImage(img3, coin1.getX_Coin()-getXImg(), coin1.getY_Coin(), coin1.getWIDTH(), coin1.getHEIGHT(), null);
+		
+		coin1.CoinCollisionquery(coin1.getX_Coin() - getXImg(), coin1.getY_Coin() + coin1.getHEIGHT(), left + (120-10), char_y);
+	
+			
+		if(coin1.Coin() == true) {
+			coin_score = 1;
+			img3 = null;
+		}
+		
+		g.drawImage(img4, coin2.getX_Coin()-getXImg(), coin2.getY_Coin(), coin2.getWIDTH(), coin2.getHEIGHT(), null);
+		
+		coin1.CoinCollisionquery(coin2.getX_Coin() - getXImg(), coin2.getY_Coin() + coin2.getHEIGHT(), left + (120-10), char_y);
+	
+			
+		if(coin2.Coin() == true) {
+			coin_score = 1;
+		}
+
+		g.drawString("Score: "+ coin_score, 10,15);
+	}
+	
+	private int getXImg() {
+		return  ximg;
+	}
+
+	private class AL extends KeyAdapter{
+		
+		public AL() {
+			
+		}
+		
+		public void keyPressed(KeyEvent e) {
+			
+			key = e.getKeyCode();
+			
+			if(key == KeyEvent.VK_LEFT) {
+					lauf = -2;
+				}
+			
+		    if(key == KeyEvent.VK_RIGHT) {
+					lauf = 2;	
+				}
+		    if(key == KeyEvent.VK_SPACE) {
+		    	Sprung();
+		    }
+		    		
+		    
+			if(key == KeyEvent.VK_ESCAPE) {
+				MainGUI mgui = new MainGUI();
+				mgui.MenuGUI();
+				
+				JFrame sgui = MainGUI.sgui;
+				sgui.dispose();
+				
+				}
+			}
+			
+		
+		}
+		
+		public void keyReleased(KeyEvent e) {
+			key = e.getKeyCode();
+			
+			if(key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT) 		lauf = 0;
+			
+		}		
+		
+		public void Sprung() {
+			Jump SprungAnimation = new Jump();
+			SprungAnimation.start();
+		}
+}
+
+
+
