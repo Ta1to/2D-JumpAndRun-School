@@ -1,0 +1,58 @@
+package movement;
+
+public class Jump extends Thread {
+
+	static boolean fertig = true;
+	static boolean hochpunkt = false;
+	
+	int sprunghöhe = 55;
+	static int ursprungY = 175;
+	public static int sprungposition = ursprungY;
+	
+	public Jump() {
+		
+	}
+	
+	public void run() {
+		fertig = false;
+		int verzögerung = 4;
+		
+		
+		while(fertig == false) {
+			Jump();
+			
+			try {
+				Thread.sleep(verzögerung);
+			}catch(Exception e) {
+				
+			}
+		}
+		
+		hochpunkt = false;
+		
+	}
+	
+	public void Jump() {
+		if(hochpunkt == false) {
+			sprungposition--;
+		}
+		if(sprungposition == (ursprungY-sprunghöhe)) {
+			hochpunkt = true;
+		}
+		if(hochpunkt == true && sprungposition <= ursprungY) {
+			sprungposition ++;
+			if(sprungposition == ursprungY) {
+				fertig = true;
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
