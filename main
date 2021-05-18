@@ -1,0 +1,16 @@
+package main;
+
+import gui.MainGUI;
+
+public class main {
+
+	public static void main(String[] args) {
+		
+		MainGUI menu = new MainGUI();
+		menu.MenuGUI();
+
+
+	}
+
+}
+
